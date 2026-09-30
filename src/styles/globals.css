@@ -1,0 +1,75 @@
+/* Reset CSS, typography, and custom HUD layouts */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── 1. CORE CANVAS & VIEWPORT RESETS ─── */
+@layer base {
+  html,
+  body,
+  #root {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #09090b; /* zinc-950 background color matching our 3D fog */
+    overflow-x: hidden;
+    overflow-y: auto;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Force standard HTML layouts to stretch cleanly behind absolute WebGL layers */
+  body {
+    position: relative;
+    color: #f4f4f5;
+  }
+}
+
+/* ─── 2. HIDING MECHANICAL BROWSER OVERLAYS ─── */
+/* Hides standard browser scrollbars so that Drei's ScrollControls handle the velocity smoothly */
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+/* Clear selection highlighters to ensure mouse drags don't turn text blue inside our game space */
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* ─── 3. INTERACTIVE 3D & CRT ENGINE GRAPHICS ─── */
+/* Ensures absolute 2D element overlays pass clicks safely down into ThreeJS coordinates */
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
+/* Retro CRT monitor flicker and jitter animation utilities */
+@keyframes crt-pulse {
+  0%, 100% { opacity: 0.95; }
+  50% { opacity: 0.85; }
+}
+
+.animate-pulse {
+  animation: crt-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Clean, crisp text rendering inside Three.js HTML nodes */
+iframe, 
+.html-portal-node {
+  transform-origin: top left;
+  image-rendering: pixelated;
+  backface-visibility: hidden;
+}

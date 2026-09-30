@@ -1,0 +1,1 @@
+// Project detail panels and blog reader overlay
